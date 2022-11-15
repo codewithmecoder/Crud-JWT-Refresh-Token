@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -119,8 +121,18 @@ public class AuthController : ControllerBase
 		});
 	}
 
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+	[HttpGet("me")]
+	public async Task<IActionResult> GetMe(){
+		var claimsIdentity = User.Identity as ClaimsIdentity;
+    string id = claimsIdentity?.FindFirst("id")?.Value ?? "";
+		var user = await _userManager.FindByIdAsync(id);
+		var roles = await _userManager.GetRolesAsync(user);
+		var claims = await _userManager.GetClaimsAsync(user);
+		return Ok(new {user, claims, roles});
+	}
+
 	private async Task<List<Claim>> GetAllValidCliams(IdentityUser user){
-		var _option = new IdentityOptions();
 		var claims = new List<Claim>(){
 				new Claim("id", user.Id),
 				new Claim(JwtRegisteredClaimNames.Sub, user.Email),
