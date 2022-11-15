@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SQLitePCL;
 using Ticket.Tracking.System.Data;
 using Ticket.Tracking.System.Models;
 
 namespace Ticket.Tracking.System.Controllers;
 
+
 [Route("api/[controller]")]
 [ApiController]
+[Produces("application/json")]
+[Authorize]
 public class TeamController : ControllerBase
 {
     
