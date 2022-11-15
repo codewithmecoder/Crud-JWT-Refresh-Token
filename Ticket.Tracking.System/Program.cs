@@ -16,7 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "UNT Picking API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Testing Role User", Version = "v1" });
     //c.SchemaFilter<MySwaggerSchemaFilter>();
     var security = new Dictionary<string, IEnumerable<string>>
                 {
@@ -68,21 +68,27 @@ builder.Services.AddAuthentication(options =>
     });
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<AppDbContext>();
-// builder.Services.AddSingleton<JwtConfig>();
+builder.Services.AddCors(options => options.AddPolicy("Open", b => b.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+builder.Services.AddAuthorization(options => {
+   options.AddPolicy("DepartmentPolicy", policy => {
+    List<string> valueClaims = new(){"sales", "accounting"};
+    policy.RequireClaim("department", valueClaims);
+   });
+});
 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment())
-// {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-// }
+app.UseSwagger(c =>
+{
+    c.RouteTemplate = "/swagger/{documentName}/swagger.json";
+});
 
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+});
 
-
-app.UseHttpsRedirection();
 
 app.UseAuthentication();
 

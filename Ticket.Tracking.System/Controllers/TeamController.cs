@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ticket.Tracking.System.Data;
@@ -9,8 +10,7 @@ namespace Ticket.Tracking.System.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Produces("application/json")]
-[Authorize]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, AppUser")]
 public class TeamController : ControllerBase
 {
     
@@ -70,6 +70,7 @@ public class TeamController : ControllerBase
     }
 
     [HttpPost()]
+    [Authorize(Policy = "DepartmentPolicy")]
     public async Task<IActionResult> Post([FromBody] Team team)
     {
         await _context.Teams!.AddAsync(team);
