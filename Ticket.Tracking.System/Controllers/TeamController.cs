@@ -13,42 +13,6 @@ namespace Ticket.Tracking.System.Controllers;
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, AppUser")]
 public class TeamController : ControllerBase
 {
-    
-    //private List<Team> teams = new()
-    //{
-    //    new Team()
-    //    {
-    //        Country = "Cambodia",
-    //        Description = "Hello sdfn;sa",
-    //        Id = 1,
-    //        Name = "Bek Sloy",
-    //        TeamPrinciple = "GGG"
-    //    },
-    //    new Team()
-    //    {
-    //        Country = "Cambodia1",
-    //        Description = "Hello sdfn;sa",
-    //        Id = 2,
-    //        Name = "Bek Sloy",
-    //        TeamPrinciple = "GGG"
-    //    },
-    //    new Team()
-    //    {
-    //        Country = "Cambodia2",
-    //        Description = "Hello sdfn;sa",
-    //        Id = 3,
-    //        Name = "Bek Sloy",
-    //        TeamPrinciple = "GGG"
-    //    },
-    //    new Team()
-    //    {
-    //        Country = "Cambodia3",
-    //        Description = "Hello sdfn;sa",
-    //        Id = 4,
-    //        Name = "Bek Sloy",
-    //        TeamPrinciple = "GGG"
-    //    }
-    //};
     private readonly AppDbContext _context;
     public TeamController(AppDbContext context)
     {

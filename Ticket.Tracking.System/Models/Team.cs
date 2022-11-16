@@ -1,6 +1,6 @@
 ﻿namespace Ticket.Tracking.System.Models;
 
-public class Team
+public class Team : BaseModel
 {
     public int Id { get; set; }
     public string? Name { get; set; }

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,20 +9,18 @@ namespace Ticket.Tracking.System.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class SetupController : ControllerBase
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+public class RoleSetupController : ControllerBase
 {
-  private readonly AppDbContext _context;
   private readonly UserManager<IdentityUser> _userManager;
   private readonly RoleManager<IdentityRole> _roleManager;
-  private readonly ILogger<SetupController> _logger;
+  private readonly ILogger<RoleSetupController> _logger;
 
-  public SetupController(
-    AppDbContext context,
+  public RoleSetupController(
     UserManager<IdentityUser> userManager,
     RoleManager<IdentityRole> roleManager,
-    ILogger<SetupController> logger)
+    ILogger<RoleSetupController> logger)
     {
-        _context = context;
         _userManager = userManager;
         _roleManager = roleManager;
         _logger = logger;
